@@ -23,10 +23,12 @@ fis.config.merge({
       },{
         reg     : 'templates/layout.jade',
         release : 'index.html',
-        isHtmlLike:false
+        isHtmlLike:false,
+        useCache: false
       },{
-        reg     : '*.jade',
-        release : false
+        reg     : '**.jade',
+        release : false,
+        useCache: false
       },{
         reg     : '*.js',
         release : false
