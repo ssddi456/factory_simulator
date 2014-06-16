@@ -13,10 +13,16 @@ html
     .body
       .container
         .row
-          .col-md-7(data-bind="foreach:factories")
-              include ./components/named_progress.jade
+          .col-md-5
+          .col-md-7.row(data-bind="foreach:resources")
+            include ./components/resource.jade
         .row
-          .col-md-7(data-bind="foreach:resources")
-              include ./components/named_progress.jade
+          .col-md-7(data-bind="withfirst:factories")
+            include ./components/named_progress.jade
+            .row(data-bind="with: products")
+              .col-md-1
+              .col-md-11
+                include ./components/named_progress.jade
+          .col-md-5(data-bind="foreach: factories")
     script(type="text/javascript", charset="utf-8", src="http://cdn.staticfile.org/require.js/2.1.11/require.js")
     script(type="text/javascript", charset="utf-8", src="imps/app.js")

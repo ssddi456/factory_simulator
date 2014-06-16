@@ -1,5 +1,5 @@
 require.config({
-  baseUrl: './',
+  baseUrl: './imps',
   paths : {
     'jquery' : 'http://cdn.staticfile.org/jquery/1.11.0/jquery',
     'knockout':'http://cdn.staticfile.org/knockout/3.1.0/knockout-debug',
@@ -13,96 +13,30 @@ require.config({
 });
 
 require([
+  '../libs/ko.extendbindings',
+  './components/resource',
+  './components/produce_mgr',
+  './components/factory',
+  './components/products',
   'knockout',
   'jquery'
 ],function(
+  koextendbindings,
+  resource,
+  produce_mgr,
+  factory,
+  products,
   ko,
   $
 ){
-  var vm = {};
-  var k;
+  // var k;
+  // for ( k in ko ){
+  //   if( ko.hasOwnProperty(k)){
+  //     console.log( k );
+  //   }
+  // }
+  window.ko = ko
 
-  function progress (){
-    this.max     = ko.observable(100);
-    this.current = ko.observable(0);
-    this.name    = ko.observable('');
-  };
-
-  for ( k in ko ){
-    if( ko.hasOwnProperty(k)){
-      console.log( k );
-    }
-  }
-  vm.factories = ko.observableArray([]);
-
-  function factory ( name, products ){
-    progress.call(this);
-    this.name  = name;
-    this.resource_require = ko.observableArray([30]);
-    this.products = new products();
-  }
-  var fp = factory.prototype;
-  fp.produce = function(){
-    this.products.count( this.products.count() + 1 );
-  }
-
-  function product (){
-    this.name = '';
-  }
-
-  function products (){
-    this.name = 'test product';
-    this.count= ko.observable(0);
-  }
-
-  function resource ( name ){
-    this.income = ko.observable(10);
-    this.current= ko.observable(0);
-    this.max    = ko.observable(1000);
-    this.name   = name;
-  }
-  var rp = resource.prototype;
-  rp.gain_income = function(){
-    this.current( Math.min(this.current() + this.income(),this.max()) );
-  }
-
-  function produce_mgr (){
-    this.factories = ko.observableArray([]);
-    this.resources = ko.observableArray([]);
-  }
-
-  var prp = produce_mgr.prototype;
-
-  prp.produce = function( resources ){
-    var factories = this.factories();
-    var resources = this.resources()
-                      .map(function( resource ){ return resource.current() });
-
-
-    factories.forEach(function(factory){
-      var resource_require = factory.resource_require()
-      var match_require = Math.min(
-                            resource_require
-                              .map(function( val, idx ){
-                                return 0 + (resources[idx] > val );
-                              })
-                          ) == 1;
-      if ( match_require ){
-        factory.produce();
-        resource_require.forEach(function( val, idx ){
-          resources[idx] -= val;
-        });
-      }
-    });
-
-    this.resources()
-      .forEach(function( resource, idx ){ 
-        resource.current( resources[idx] ) 
-      });
-  };
-  prp.gain_income = function(){
-    this.resources().forEach(function( resource ){ resource.gain_income() });
-  };
 
   var produce_mgr_test = new produce_mgr();
 
@@ -119,6 +53,14 @@ require([
   setTimeout(function(){
 
     produce_mgr_test.gain_income();
+   
+    if ( !produce_mgr_test.factories().map(function(factory){
+            return factory.products.complete();
+          }).every(Boolean) 
+          && produce_mgr_test.factories()[0].products.complete() 
+    ){
+      produce_mgr_test.factories.push( produce_mgr_test.factories.shift() );
+    }
     produce_mgr_test.produce();
 
     setTimeout(arguments.callee,1e3);
