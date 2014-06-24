@@ -1,4 +1,7 @@
 fis.config.merge({
+  project : { 
+    exclude : /html|css|js/i 
+  },
   //插件配置节点
   modules : {
     // 编译器插件配置节点

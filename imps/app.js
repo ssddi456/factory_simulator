@@ -13,59 +13,21 @@ require.config({
 });
 
 require([
-  '../libs/ko.extendbindings',
-  './components/resource',
-  './components/produce_mgr',
-  './components/factory',
-  './components/products',
+  './battle_field',
   'knockout',
-  'jquery'
+  '../libs/ko.extendbindings',
+  './factories'
 ],function(
-  koextendbindings,
-  resource,
-  produce_mgr,
-  factory,
-  products,
+  battle_field,
   ko,
-  $
+  koextendbindings,
+  factory
 ){
-  // var k;
-  // for ( k in ko ){
-  //   if( ko.hasOwnProperty(k)){
-  //     console.log( k );
-  //   }
-  // }
-  window.ko = ko
 
+  ko.applyBindings(factory,$('[ko-control=factory]').get(0));
+  ko.applyBindings(battle_field,$('[ko-control=battle_field]').get(0));
 
-  var produce_mgr_test = new produce_mgr();
-
-  produce_mgr_test.factories.push( new factory('factory 1', products ) );
-  produce_mgr_test.factories.push( new factory('factory 2', products ) );
-  produce_mgr_test.factories.push( new factory('factory 3', products ) );
-  produce_mgr_test.factories.push( new factory('factory 4', products ) );
-
-  produce_mgr_test.resources.push( new resource('walter') );
-  produce_mgr_test.resources.push( new resource('wood') );
-  produce_mgr_test.resources.push( new resource('steel') );
-
-
-  setTimeout(function(){
-
-    produce_mgr_test.gain_income();
-   
-    if ( !produce_mgr_test.factories().map(function(factory){
-            return factory.products.complete();
-          }).every(Boolean) 
-          && produce_mgr_test.factories()[0].products.complete() 
-    ){
-      produce_mgr_test.factories.push( produce_mgr_test.factories.shift() );
-    }
-    produce_mgr_test.produce();
-
-    setTimeout(arguments.callee,1e3);
-  },1e3);
-
-  ko.applyBindings ( produce_mgr_test );
+  factory.timer.run();
+  battle_field.timer.run();
 
 });

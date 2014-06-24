@@ -25,14 +25,15 @@ define([
 
   util.koModule = function( properties, skips, prototype ) {
     var keys = Object.keys(properties); 
+    skips = skips ||[];
     var ret = function( init ) {
       var data = $.extend({}, properties, init);
       var self =  this;
       keys.forEach(function( k ){
         if( skips.indexOf(k) != -1 ){
-          self.k = data[k];
+          self[k] = data[k];
         } else {
-          self.k = ko[ $.isArray(data[k]) ? 'observableArray' : 'observable' ]( data[k] );
+          self[k] = ko[ $.isArray(data[k]) ? 'observableArray' : 'observable' ]( data[k] );
         }
       });
     }
