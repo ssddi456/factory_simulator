@@ -18,7 +18,7 @@ define([
       }
     },{
       get : function( n ) {
-        if( n < this.grids.length || n > 0 ){
+        if( n < this.grids.length || n >= 0 ){
           return this.grids()[n];
         }
       }

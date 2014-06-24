@@ -17,10 +17,6 @@ fis.config.merge({
     },
     //配置所有资源的domain
     path : [{
-        reg : /index\.html|\.css/,
-        release : false,
-        useCompile:false
-      },{
         reg : 'map.json',
         release : false
       },{

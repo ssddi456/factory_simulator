@@ -9,9 +9,9 @@ define([
       unit : undefined,
       pos  : 0,
       grids: undefined
-    }),function() {
-      this.empty = ko.computed(function() {
-        return !!this.unit();
-      },this)
+    },['pos']),function() {
+      this.empty =  ko.computed(function() {
+                      return !this.unit();
+                    },this)
     })
 });

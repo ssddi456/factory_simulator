@@ -5,3 +5,10 @@
   left: 0px;
   right: 0px;
 }
+.battle_grid {
+  height: 60px;
+  background: #999;
+}
+.solider {
+  background: #990;
+}

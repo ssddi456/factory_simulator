@@ -9,9 +9,10 @@ define([
     },{
       run : function() {
         var self = this;
+        console.log( Date.now() );
         this.timer = setTimeout(function(){
           self.runner();
-          setTimeout(arguments.callee,self.interv);
+          self.run();
         },self.interv);
       },
       pause : function() {
