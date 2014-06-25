@@ -9,7 +9,6 @@ define([
     },{
       run : function() {
         var self = this;
-        console.log( Date.now() );
         this.timer = setTimeout(function(){
           self.runner();
           self.run();

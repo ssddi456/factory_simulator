@@ -33,7 +33,9 @@ define([
         if( skips.indexOf(k) != -1 ){
           self[k] = data[k];
         } else {
-          self[k] = ko[ $.isArray(data[k]) ? 'observableArray' : 'observable' ]( data[k] );
+          self[k] = $.isArray(data[k]) ? 
+                      ko[ 'observableArray' ]( data[k].slice(0) ) :
+                      ko[ 'observable' ]( data[k] );
         }
       });
     }

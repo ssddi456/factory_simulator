@@ -25,6 +25,8 @@ html
                 include ./components/named_progress.jade
           .col-md-5(data-bind="foreach: factories")
       .container(ko-control="battle_field")
+        .row
+          .col-md-12(data-bind="text: 'round : ' + round()")
         .row(data-bind="foreach: grids")
           .col-md-1
             .battle_grid(data-bind="if:!empty(), css:{ solider : !empty() }")

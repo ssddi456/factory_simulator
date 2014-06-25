@@ -12,22 +12,30 @@ define([
   return util.derive(util.koModule({
       start_pos: -1,
       gain_rate: 10,
-      curent   : 0,
+      current  : 0,
       count    : 0,
       def_attr : {}
     },[
-      'gain_rate','curent','def_attr','count'
+      'gain_rate','current','def_attr','count'
     ]),function() {
       this.soliders = ko.observableArray();
     },{
+      gain_solider : function( ){
+        this.current ++;
+        if( this.current > this.gain_rate ){
+          this.count ++;
+          this.current = 0;
+          var data = $.extend({
+                pos : this.start_pos()
+              },this.def_attr);
+  
+          data.name += ' ' + this.count;
+          this.soliders.push(new solider(data))
+        }
+      },
       move_forward : function( field ) {
         var self = this;
         this.soliders().forEach(function( solider ){
-          if( !solider.is_alive() ){
-            field.get( solider.pos() ).unit(null);
-            self.soliders.remove(solider);
-            return;
-          }
   
           var next_pos = field.get( solider.next_pos() );
           if( solider.can_move(next_pos) ){
@@ -40,18 +48,15 @@ define([
           }
         })
       },
-      gain_solider : function( ){
-        this.curent ++;
-        if( this.curent > this.gain_rate ){
-          this.count ++;
-          this.curent = 0;
-          var data = $.extend({
-                pos : this.start_pos()
-              },this.def_attr);
-  
-          data.name += ' ' + this.count;
-          this.soliders.push(new solider(data))
-        }
+      round_final : function( field ){
+        var self = this;
+        this.soliders().forEach(function( solider ) {
+          solider.damage_final_acount();
+          if( !solider.is_alive() ){
+            solider.die(field);
+            self.soliders.remove( solider );
+          }
+        });
       }
     });
 });

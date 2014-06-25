@@ -8,7 +8,6 @@ define([
       var didDisplayOnLastUpdate,
         savedNodes;
         ko.computed(function() {
-          console.log('withfirst init triggered');
           var dataValue = ko.utils.unwrapObservable(valueAccessor());
           var shouldDisplay = (!dataValue) || typeof dataValue.length == "number";
           var isFirstRender = !savedNodes;
