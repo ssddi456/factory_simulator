@@ -11,8 +11,8 @@ define([
   timer,
   battle_grids
 ){
-  var army_a = new army({ start_pos : -1, def_attr : { name : 'a_solider' }});
-  var army_b = new army({ start_pos : 12, def_attr : { spd  : -1, name : 'b_solider' }});
+  var army_a = new army({ start_pos : -1, def_attr : { name : 'a_s' }});
+  var army_b = new army({ start_pos : 12, def_attr : { dir  : -1, name : 'b_s' }});
   
   army_a.current = army_b.current = 7
   

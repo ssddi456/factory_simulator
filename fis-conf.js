@@ -1,7 +1,7 @@
 fis.config.merge({
-  project : { 
-    exclude : /html|css|js/i 
-  },
+  project : {
+    exclude : /html|js|css|json/
+  }
   //插件配置节点
   modules : {
     // 编译器插件配置节点
@@ -22,15 +22,11 @@ fis.config.merge({
       },{
         reg     : 'templates/layout.jade',
         release : 'index.html',
-        isHtmlLike:false,
-        useCache: false
+        isHtmlLike:false
       },{
         reg     : '**.jade',
         release : false,
         useCache: false
-      },{
-        reg     : '*.js',
-        release : false
       }]
   },
   deploy : {

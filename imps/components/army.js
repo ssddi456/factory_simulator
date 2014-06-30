@@ -28,8 +28,10 @@ define([
           var data = $.extend({
                 pos : this.start_pos()
               },this.def_attr);
-  
-          data.name += ' ' + this.count;
+          data.att_range = Math.random() > 0.5 ? 3 : 1;
+          data.name +=  (data.att_range == 3 ? 'ranger' : 'footman') + '::' + this.count;
+
+          data.alliance = this;
           this.soliders.push(new solider(data))
         }
       },
@@ -38,13 +40,15 @@ define([
         this.soliders().forEach(function( solider ){
   
           var next_pos = field.get( solider.next_pos() );
+          // attack first
+          var target = solider.search( field );
+          if( target ){
+            solider.attack( target );
+            return;
+          }
+          // move the second
           if( solider.can_move(next_pos) ){
             solider.move_to(next_pos);
-          } else if( next_pos ){
-            var unit = next_pos.unit();
-            if( unit && unit.solider ){
-              solider.attack( unit );
-            }
           }
         })
       },

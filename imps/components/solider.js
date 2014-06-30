@@ -6,14 +6,17 @@ define([
   util
 ){
   return util.derive(util.koModule({
-      pos : 0,
-      spd : 1,
-      atk : 5,
-      def : 1,
-      hp  : 10,
-      name: '',
-      damage_stack : [],
-      last_damage_source : ''
+      pos                : 0,
+      spd                : 1,
+      atk                : 5,
+      def                : 1,
+      hp                 : 10,
+      dir                : 1,
+      att_range          : 1,
+      name               : '',
+      damage_stack       : [],
+      last_damage_source : '',
+      alliance           : ''
     }),function() {
       this.is_alive =  ko.computed(function() {
                         return this.hp() > 0;
@@ -22,6 +25,24 @@ define([
     },{
       attack : function( solider ) {
         solider.reciev_damage( this.atk() - solider.def(), this );
+      },
+      search : function( field ) {
+        var grid, unit;
+        var pos = this.pos();
+        var dir = this.dir();
+        var alliance = this.alliance();
+
+        for(var i = 1, n = this.att_range(); i <= n; i ++ ){
+          grid = field.get(  pos + dir * i );
+          if( grid ){
+            unit = grid.unit();
+            if( unit && unit.solider &&  unit.alliance() != alliance ){
+              return unit;
+            }
+          } else {
+            return;
+          }
+        }
       },
       reciev_damage : function( damage, dealer ) {
         this.damage_stack.push([damage, dealer.name() ]);
@@ -40,7 +61,7 @@ define([
         this.hp( hp );
       },
       next_pos : function( ) {
-        return this.pos() + this.spd();
+        return this.pos() + this.spd() * this.dir();
       },
       can_move : function( grid ) {
         return grid && grid.empty();
