@@ -35,7 +35,8 @@ define([
         for(var i = 1, n = this.att_range(); i <= n; i ++ ){
           grid = field.get(  pos + dir * i );
           if( grid ){
-            unit = grid.unit();
+            unit = grid.units()[0];
+            console.log( grid.units().length, unit, unit && unit.solider );
             if( unit && unit.solider &&  unit.alliance() != alliance ){
               return unit;
             }
@@ -69,14 +70,15 @@ define([
       move_to  : function( grid ) {
         console.log('move', this.name(), 'from', this.pos(), 'to', grid.pos );
         var prev_grid = grid.grids().get( this.pos() );
-        prev_grid && prev_grid.unit(null);
+
+        prev_grid && prev_grid.units.remove(this);
 
         this.pos(grid.pos);
-        grid.unit(this);
+        grid.units.push(this);
       },
       die      : function( field ) {
         var grid = field.get( this.pos() );
-        grid.unit(null);
+        grid.units.remove(this);
         console.log( this.name() , ': die');
       }
     })

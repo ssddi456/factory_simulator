@@ -28,14 +28,13 @@ html
         .row
           .col-md-12(data-bind="text: 'round : ' + round()")
         .row(data-bind="foreach: grids")
-          .col-md-1
-            .battle_grid(data-bind="if:!empty(), css:{ solider : !empty() }")
-              div(data-bind="with: unit()")
-                | name : 
-                span(data-bind="text: name")
-                br
-                | hp :
-                span(data-bind="text: hp")
+          .battle_grid(data-bind="if:!empty(), css:{ solider : !empty() }")
+            div(data-bind="withfirst: units")
+              | name : 
+              span(data-bind="text: name")
+              br
+              | hp :
+              span(data-bind="text: hp")
 
     script(type="text/javascript", charset="utf-8", src="http://cdn.staticfile.org/require.js/2.1.11/require.js")
     script(type="text/javascript", charset="utf-8", src="imps/app.js")

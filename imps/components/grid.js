@@ -6,12 +6,12 @@ define([
   util
 ){
   return util.derive(util.koModule({
-      unit : undefined,
-      pos  : 0,
-      grids: undefined
+      units : [],
+      pos   : 0,
+      grids : undefined
     },['pos']),function() {
       this.empty =  ko.computed(function() {
-                      return !this.unit();
+                      return !this.units().length;
                     },this)
     })
 });

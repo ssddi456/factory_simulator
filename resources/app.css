@@ -8,6 +8,10 @@
 .battle_grid {
   height: 60px;
   background: #999;
+  width: 5%;
+  padding: 0;
+  margin: 0;
+  float: left;
 }
 .solider {
   background: #990;
