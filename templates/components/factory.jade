@@ -1,0 +1,18 @@
+.col-md-4
+  .row
+.col-md-4
+  .row(data-bind="with : current_product")
+    .col-md-3
+      .producing-unit(data-bind="text: data.name")
+    .col-md-9
+      .producing-progress
+        .progress.progress-striped
+          .progress-bar(data-bind="style : { width : current()/max()*100 + '%' }")
+  .row(data-bind="foreach: waiting_queue")
+    .col-md-3
+      .producing-unit(data-bind="text: data.name")
+.col-md-4
+  .row(data-bind="foreach: unit_data")
+    .col-md-3
+      .producing-unit(data-bind="text: data.name,\
+                                 click:$parent.add_product_from_data.bind($parent)")

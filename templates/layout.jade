@@ -11,30 +11,22 @@ html
         .navbar-brand
           | factory simulater
     .body
-      .container(ko-control="factory")
-        .row
-          .col-md-5
-          .col-md-7.row(data-bind="foreach:resources")
-            include ./components/resource.jade
-        .row
-          .col-md-7(data-bind="withfirst:factories")
-            include ./components/named_progress.jade
-            .row(data-bind="with: products")
-              .col-md-1
-              .col-md-11
-                include ./components/named_progress.jade
-          .col-md-5(data-bind="foreach: factories")
+      .container
+        .row(ko-control="factory_a")
+          include ./components/factory.jade
       .container(ko-control="battle_field")
         .row
           .col-md-12(data-bind="text: 'round : ' + round()")
         .row(data-bind="foreach: grids")
           .battle_grid(data-bind="if:!empty(), css:{ solider : !empty() }")
             div(data-bind="withfirst: units")
-              | name : 
-              span(data-bind="text: name")
-              br
-              | hp :
-              span(data-bind="text: hp")
+              div(data-bind="css : alliance().flag ")
+                | name : 
+                span(data-bind="text: name")
+                br
+                | hp :
+                span(data-bind="text: hp")
 
     script(type="text/javascript", charset="utf-8", src="http://cdn.staticfile.org/require.js/2.1.11/require.js")
     script(type="text/javascript", charset="utf-8", src="imps/app.js")
+    script(type="text/javascript", charset="utf-8", src="http://localhost:35729/livereload.js")

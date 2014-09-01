@@ -15,19 +15,15 @@ require.config({
 require([
   './battle_field',
   'knockout',
-  '../libs/ko.extendbindings',
-  './factories'
+  '../libs/ko.extendbindings'
 ],function(
   battle_field,
   ko,
-  koextendbindings,
-  factory
+  koextendbindings
 ){
 
-  ko.applyBindings(factory,$('[ko-control=factory]').get(0));
   ko.applyBindings(battle_field,$('[ko-control=battle_field]').get(0));
 
-  factory.timer.run();
   battle_field.timer.run();
 
 });

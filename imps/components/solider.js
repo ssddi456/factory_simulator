@@ -61,9 +61,6 @@ define([
         this.damage_stack.removeAll();
         this.hp( hp );
       },
-      next_pos : function( ) {
-        return this.pos() + this.spd() * this.dir();
-      },
       can_move : function( grid ) {
         return grid && grid.empty();
       },
@@ -75,6 +72,25 @@ define([
 
         this.pos(grid.pos);
         grid.units.push(this);
+      },
+      move_forward : function ( field ){
+        var pos = this.pos();
+        var dir = this.dir();
+        var spd = this.spd();
+
+        var _pos, _grid;
+        for (var i = 0; i < spd; i ++ ){
+          _pos = pos + dir * (i+1);
+          grid = field.get(_pos);
+          if( grid && grid.empty){
+           _grid = grid;
+          } else {
+            break;
+          }
+        }
+        if ( i && _grid ){
+          this.move_to( _grid );
+        }
       },
       die      : function( field ) {
         var grid = field.get( this.pos() );

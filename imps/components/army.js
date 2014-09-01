@@ -1,37 +1,55 @@
 define([
+  '../unit_data',
+  './product',
+  './progress',
+  './factory',
   'jquery',
   './solider',
   '../../libs/util',
   'knockout'
 ],function(
+  unit_data,
+  product,
+  progress,
+  factory,
   $,
   solider,
   util,
   ko
 ){
-  return util.derive(util.koModule({
-      start_pos: -1,
-      gain_rate: 10,
-      current  : 0,
-      count    : 0,
-      def_attr : {}
+  return util.koModule({
+      start_pos  : -1,
+      soliders   : [],
+      def_attr   : {},
+      count      : 0,
+      storehouse : [],
+      flag       : ''
     },[
-      'gain_rate','current','def_attr','count'
-    ]),function() {
+      'def_attr', 'count', 'flag'
+    ])
+    .derive(function() {
       this.def_attr.alliance = this;
-      this.soliders = ko.observableArray();
+      
+      this.factory = new factory({ 
+                          name       : this.name + '::factory',
+                          storehouse : this.storehouse,
+                          unit_data  : unit_data
+                        });
+
     },{
       gain_solider : function( field, timer ){
-        this.current ++;
-        if( this.current > this.gain_rate ){
+
+        this.factory.produce();
+
+        if( this.storehouse().length ){
+          var waiting_solider = this.storehouse.shift();
           this.count ++;
-          this.current = 0;
-          var data = $.extend({
+          var data = $.extend({},waiting_solider.data,{
                 pos : this.start_pos()
               },this.def_attr);
-          data.att_range = Math.random() > 0.5 ? 3 : 1;
-          data.name +=  (data.att_range == 3 ? 'ranger' : 'footman') + '::' + this.count;
-          this.soliders.push(new solider(data))
+
+          data.name += '::' + this.count;
+          this.soliders.push(new solider(data));
         }
       },
       search_and_attack : function( field, timer ){
@@ -52,11 +70,7 @@ define([
           if( solider.acted ){
             return;
           }
-          var next_pos = field.get( solider.next_pos() );
-          // move the second
-          if( solider.can_move(next_pos) ){
-            solider.move_to(next_pos);
-          }
+          solider.move_forward( field );
         })
       },
       round_final : function( field, timer ){

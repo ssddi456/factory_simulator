@@ -7,7 +7,11 @@ define([
 ){
   var util = {};
 
-
+  var derive_binding = function() {
+    var args = [].slice.call(arguments);
+    args.unshift(this);
+    return util.derive.apply(null, args);
+  }
   util.derive = function( sup, sub, proto ) {
     if( arguments.length == 2 && typeof sub != 'function' ){
       $.extend(sup.prototype, sub);
@@ -18,6 +22,7 @@ define([
       sup.apply( this, arguments );
       sub.apply( this, arguments );
     }
+    ret.derive = derive_binding;
 
     $.extend( ret.prototype, sup.prototype, proto );
     return ret;
@@ -39,6 +44,8 @@ define([
         }
       });
     }
+
+    ret.derive = derive_binding;
     $.extend( ret.prototype, prototype);
     return ret;
   }
